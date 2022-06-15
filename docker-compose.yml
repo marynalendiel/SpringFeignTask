@@ -1,0 +1,47 @@
+version: "1.0"
+
+services:
+  springboottask:
+    image: springboottask
+#    build:
+#      context: .
+#      dockerfile: SpringBootTask/Dockerfile
+    ports:
+      - "9090:8080"
+#    env_file:
+#      - ./dev-scripts/.local.env
+    environment:
+      - DEV_MESSAGE=${DEV_MESSAGE}
+      - SPRING_DATASOURCE_DB=${SPRING_DATASOURCE_DB}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+    depends_on:
+      - mysqldb
+#        mysqldb:
+#          condition: service_healthy
+
+  springfeignclient:
+    image: springfeignservice
+    ports:
+      - "8080:8080"
+    depends_on:
+      - springboottask
+
+  mysqldb:
+    image: mysql:8.0.28
+    hostname: mysqldb
+    container_name: mysqldb
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      MYSQL_DATABASE: ${SPRING_DATASOURCE_DB}
+    volumes:
+      - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysql", "-h", "localhost", "-P", "3306", "-u", "root", "--password=qwerty123", "-e", "select 1", "DOCKERDB" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
