@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `user_order_db`.`user`
+CREATE TABLE IF NOT EXISTS `user_order`.`user`
 (
     `id`         BIGINT      NOT NULL AUTO_INCREMENT,
     `first_name` VARCHAR(45) NOT NULL,

@@ -26,29 +26,3 @@ public class CustomInvocationHandler implements InvocationHandler {
         return method.invoke(userService, args);
     }
 }
-
-
-//    @Override
-//    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-//
-//        Method[] methods = bean.getClass().getMethods();
-//        for (Method method : methods) {
-//            Snapshot annotation = method.getAnnotation(Snapshot.class);
-//            Object returnObj = null;
-//            if (annotation != null) {
-//                System.out.println("(@Before) Executing method: with input param: " + method.getName());
-//                logger.info("(@Before) Executing method: {} with input param", method.getName());
-//                try {
-//                    returnObj = Proxy.getInvocationHandler(bean).invoke(bean, method, method.getParameters());
-//                } catch (Throwable e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return bean;
-//    }
-//
-//    @Override
-//    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-//        return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
-//    }

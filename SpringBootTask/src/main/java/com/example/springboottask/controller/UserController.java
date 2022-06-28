@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -49,8 +50,9 @@ public class UserController {
         return userDtoConverter.toDto(users);
     }
 
-    @GetMapping("/{userId}")
-    public UserDto getUser(@PathVariable Long userId) {
+    // GET: api/v1/users/1/books?pagesize=20&pagenumber=0
+    @GetMapping("/{userId}/books")
+    public UserDto getUser(@PathVariable Long userId, @RequestParam int pageSize, @RequestParam int pageNumber) {
 
         User user = userService.getUser(userId);
         UserDto userDto = userDtoConverter.toDto(user);
